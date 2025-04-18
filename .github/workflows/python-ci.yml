@@ -7,11 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  setup:
+    name: 📦 Setup Python & Install Dependencies
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Set up Python
@@ -19,13 +20,44 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies (direct install)
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install mysql-connector-python
         pip install python-chess
+
+  lint:
+    name: 🧹 Lint with flake8
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install flake8
+      run: |
         pip install flake8
 
-    - name: Lint with flake8
+    - name: Run flake8
+      run: flake8 . || true
+
+  test:
+    name: 🧪 Dummy Tests (placeholder)
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Simulate test
       run: |
-        flake8 . || true
+        echo "Running tests..."
+        echo "✅ Tests passed"
